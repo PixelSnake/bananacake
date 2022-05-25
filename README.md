@@ -25,4 +25,4 @@ The project contains a central visual studio solution `bcake.sln` that contains 
 
 ## TODO List:
 
-[TODO List](TODO.md)
+[TODO List](https://github.com/PixelSnake/bananacake/projects/1)
