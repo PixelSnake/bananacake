@@ -1,0 +1,58 @@
+namespace Math {
+    public class Vector3 {
+        private int x;
+        private int y;
+        private int z;
+
+        public Vector3(this.x, this.y, this.z) {}
+
+        public Vector3 plus(Vector3 other) {
+            println("adding");
+            println(other as string);
+            println(x);
+            println(this as string);
+            return new Vector3(x + other.x, y + other.y, z + other.z);
+        }
+
+        public Vector3 operatorPlus(Vector3 other) {
+            println("adding");
+            println(other as string);
+            println(x);
+            println(this as string);
+            return new Vector3(x + other.x, y + other.y, z + other.z);
+        }
+
+        public cast string() {
+            string _x = x as string;
+            string _y = y as string;
+            string _z = z as string;
+            return "(" + _x + ", " + _y + ", " + _z + ")";
+        }
+    }
+}
+
+namespace Std {
+    public class Array {
+        public Array() {}
+
+        public int operator_index(int x) {
+            return x * 2;
+        }
+    }
+}
+
+int main() {
+    Math.Vector3 v1 = new Math.Vector3(42, 3, 1);
+    Math.Vector3 v2 = new Math.Vector3(1, 1, 4);
+
+    println(v1 as string);
+    println(v2 as string);
+
+    Math.Vector3 v3 = v1.plus(v2);
+    println(v3 as string);
+
+    Std.Array a = new Std.Array();
+    println(a[8]);
+
+    return 0;
+}

@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "bcake": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\tn\\privat\\bananacake\\demo.bcake"
+    },
+    "test debug": {
+      "commandName": "Project",
+      "commandLineArgs": "../../../../bcake-acceptance-tests/bin/Debug/net6.0/temp/46ad225a-beba-4a71-a235-024cc4581d11.bcake"
+    }
+  }
+}
