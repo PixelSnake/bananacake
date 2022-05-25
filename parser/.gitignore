@@ -1,0 +1,10 @@
+bin/
+obj/
+.vs/
+
+*.v2
+*.v1
+*.suo
+
+*.testlog
+testlog.manifest
