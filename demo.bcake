@@ -1,33 +1,14 @@
-interface CanCastToString {
-    public cast string();
-}
-
-interface CanAdd {
-    public CanAdd operator_plus(CanAdd other);
-}
-
-
 class Foo {
     int value;
 
     public Foo(this.value) {}
 
-    public cast string() { return value as string; }
-    public Foo operator_plus(Foo other) {
-        return new Foo(value + other.value);
-    }
+    public cast string() { return value as string + "test"; }
 }
 
 int main() {
     Foo f1 = new Foo(1337);
-    Foo f2 = new Foo(10);
-    print2(f1);
-
-    print2(f1 + f2);
+    print(f1);
 
     return 0;
-}
-
-void print2(CanCastToString value) {
-    print(value as string);
 }

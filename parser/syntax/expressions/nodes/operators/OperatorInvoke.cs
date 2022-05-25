@@ -13,6 +13,14 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
         public FunctionType Function { get; protected set; }
         protected Expression _functionNode;
 
+        public OperatorInvoke() { }
+
+        public OperatorInvoke(Expression left, Expression right)
+        {
+            Left = left;
+            Right = right;
+        }
+
         protected override Expression ParseLeft(Scopes.Scope scope, Token[] tokens, Scopes.Scope typeSource) {
             Type symbol;
 
@@ -80,8 +88,8 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
             var arguments = ArgumentsNode.Parse(_functionNode, scope, argList);
             var overload = Function.GetMatchingOverload(arguments.Arguments);
             if (overload == null) {
-                if (argList.Length > 0) throw new Exceptions.InvalidArgumentsException(argList.FirstOrDefault(), Function, arguments.Arguments);
-                else throw new Exceptions.InvalidArgumentsException(tokens[0], Function, arguments.Arguments);
+                if (argList.Length > 0) throw new InvalidArgumentsException(argList.FirstOrDefault(), Function, arguments.Arguments);
+                else throw new InvalidArgumentsException(tokens[0], Function, arguments.Arguments);
             }
 
             Function = overload;

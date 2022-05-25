@@ -2,6 +2,7 @@ using BCake.Parser.Syntax;
 using BCake.Parser.Syntax.Expressions.Nodes.Value;
 using BCake.Parser.Syntax.Types;
 using BCake.Runtime;
+using BCake.Runtime.Nodes.Operators;
 using BCake.Runtime.Nodes.Value;
 
 namespace BCake.Std {
@@ -14,12 +15,21 @@ namespace BCake.Std {
             null,
             "print",
             new ParameterType[] {
-                 new ParameterType(null, StringValueNode.Type, "s")
+                 new ParameterType(null, IStringCast.IStringCast.Implementation, "s"),
             }
         ) {}
 
         public override RuntimeValueNode Evaluate(RuntimeScope scope, RuntimeValueNode[] arguments) {
-            System.Console.Write(arguments[0].Value);
+            var arg = arguments[0].Value;
+            
+            switch (arg)
+            {
+                case RuntimeClassInstanceValueNode civn:
+                    var caster = civn.RuntimeScope.GetValue("!as_string") as RuntimeFunctionValueNode;
+
+                    System.Console.Write((string)caster.Invoke(civn.RuntimeScope, arguments).Value);
+                    break;
+            }
 
             return new RuntimeNullValueNode(DefiningToken);
         }

@@ -6,6 +6,7 @@ using BCake.Parser.Syntax.Expressions.Nodes.Value;
 using BCake.Parser.Syntax.Types;
 using BCake.Runtime.Interop;
 using BCake.String.Operators;
+using BCake.Std.IStringCast;
 
 public class BCakeInterop : IInteropEntryPoint
 {
@@ -14,6 +15,7 @@ public class BCakeInterop : IInteropEntryPoint
         Print.Implementation,
         Println.Implementation,
         Array.Implementation,
+        IStringCast.Implementation,
     };
 
     public void Unsafe_Declare()

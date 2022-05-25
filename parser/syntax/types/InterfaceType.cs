@@ -8,14 +8,11 @@ namespace BCake.Parser.Syntax.Types
 {
     public class InterfaceType : InheritableType
     {
-        Type Parent;
-
-        public InterfaceType(Token definingToken, Type parent, string name, Token[] tokens) : base(null, name, Access.@public)
+        public InterfaceType(Token definingToken, Scope scope, string name, Token[] tokens) : base(null, name, Access.@public)
         {
             DefiningToken = definingToken;
             Tokens = tokens;
-            Parent = parent;
-            Scope = new Scope(parent.Scope, this);
+            Scope = new Scope(scope, this);
         }
 
         public override void ParseInner()

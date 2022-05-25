@@ -5,7 +5,7 @@ using BCake.Runtime.Nodes.Value;
 
 namespace BCake.Array {
     public class OperatorIndex : NativeFunctionType {
-        public static NativeFunctionType Implementation = new OperatorIndex();
+        public static OperatorIndex Implementation = new OperatorIndex();
         public override bool ExpectsThisArg => true;
 
         private OperatorIndex() : base(

@@ -1,22 +1,35 @@
-using System;
+using BCake.Parser.Syntax.Expressions.Nodes.Functions;
+using BCake.Parser.Syntax.Types;
+using System.Collections.Generic;
 using System.Linq;
-using BCake.Parser.Syntax.Expressions.Nodes.Operators;
 
 namespace BCake.Parser.Exceptions {
     public class InvalidArgumentsException : TokenException {
         public InvalidArgumentsException(
-            BCake.Parser.Token token,
-            BCake.Parser.Syntax.Types.FunctionType function,
-            BCake.Parser.Syntax.Expressions.Nodes.Functions.ArgumentsNode.Argument[] provided
+            Token token,
+            FunctionType function,
+            ArgumentsNode.Argument[] provided
         )
             : base(
-                $"No matching overload for function {function.FullName}:\n\tgiven {provided.Length}: ({FormatArgumentList(provided)})",
+                $"No matching overload for function {function.FullName}:\n\tgiven {provided.Length}: ({FormatArgumentList(provided)})\n\n{FormatAllOverloads(function)}",
                 token
             )
         {}
 
-        private static string FormatParamList(BCake.Parser.Syntax.Types.FunctionType.ParameterType[] ps) {
-            return string.Join(", ", ps.Select(p => p.Type.FullName));
+        private static string FormatParamList(FunctionType.ParameterType[] ps) {
+            return "(" + string.Join(", ", ps.Select(p => p.Type.FullName)) + ")";
+        }
+
+        private static string FormatAllOverloads(FunctionType function)
+        {
+            var overloads = new List<string>();
+
+            foreach (var overload in function.Overloads.Prepend(function))
+            {
+                overloads.Add($"\t\t{FormatParamList(overload.Parameters)}");
+            }
+
+            return "\tAvailable overloads are:\n" + overloads.JoinString("\n");
         }
 
         private static string FormatArgumentList(BCake.Parser.Syntax.Expressions.Nodes.Functions.ArgumentsNode.Argument[] args) {

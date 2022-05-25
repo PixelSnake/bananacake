@@ -9,10 +9,10 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Value {
         public static ValueNode Parse(Token token) {
             ValueNode node;
 
-            if ((node = Nodes.Value.IntValueNode.Parse(token)) != null) return node;
-            if ((node = Nodes.Value.BoolValueNode.Parse(token)) != null) return node;
-            if ((node = Nodes.Value.NullValueNode.Parse(token)) != null) return node;
-            if ((node = Nodes.Value.StringValueNode.Parse(token)) != null) return node;
+            if ((node = IntValueNode.Parse(token)) != null) return node;
+            if ((node = BoolValueNode.Parse(token)) != null) return node;
+            if ((node = NullValueNode.Parse(token)) != null) return node;
+            if ((node = StringValueNode.Parse(token)) != null) return node;
 
             return null;
         }

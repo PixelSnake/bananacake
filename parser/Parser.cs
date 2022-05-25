@@ -322,7 +322,7 @@ namespace BCake.Parser {
 
                                 var newInterface = new InterfaceType(
                                     definingToken,
-                                    targetScope.Type,
+                                    targetScope,
                                     name,
                                     tokens.Skip(beginScope + 1).Take(i - beginScope - 1).ToArray()
                                 );

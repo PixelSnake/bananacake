@@ -7,11 +7,18 @@ using BCake.Runtime.Nodes.Expressions;
 
 namespace BCake.Runtime.Nodes.Value {
     public abstract class RuntimeValueNode : RuntimeNode {
+        public readonly ValueNode SourceNode;
         public Type Type { get; protected set; }
         public object Value { get; protected set; }
         public RuntimeValueNode(Node node, Type type, RuntimeScope scope)
             : base(node?.DefiningToken, ConstructScope(type, scope)) {
-            if (node is ValueNode) Value = (node as ValueNode).Value;
+
+            if (node is ValueNode vNode)
+            {
+                Value = vNode.Value;
+                SourceNode = vNode;
+            }
+
             Type = type;
         }
 
