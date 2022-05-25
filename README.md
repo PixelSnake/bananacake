@@ -5,6 +5,15 @@ Most people like bananas and we all love cake, so this language is just like ban
 ## TL;DR
 [Complete Documentation](SPECS.md)
 
+## Project structure
+
+The project contains a central visual studio solution `bcake.sln` that contains all other proejcts. The repo is separated into the following folders:
+- bundle: Invokes the entry points of parser and interpreter and references the standard lib
+- parser: The parser that reads the code and builds a syntax tree
+- runtime: The interpreter that takes the syntax tree and runs it
+- stdlib: Some standard methods and types like int and print
+- acceptance-tests: Cucumber tests
+
 ## Tests
 
 - [Acceptance tests](https://github.com/PixelSnake/bananacake-tests)
@@ -16,4 +25,4 @@ Most people like bananas and we all love cake, so this language is just like ban
 
 ## TODO List:
 
-[TODO List](TODO.md)
+[TODO List](https://github.com/PixelSnake/bananacake/projects/1)
