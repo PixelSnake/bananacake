@@ -2,7 +2,7 @@
   "profiles": {
     "bcake": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\tn\\privat\\bananacake\\demo.bcake"
+      "commandLineArgs": "..\\..\\..\\..\\demo.bcake"
     },
     "test debug": {
       "commandName": "Project",

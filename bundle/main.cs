@@ -29,7 +29,7 @@ namespace BCake {
                 Parser.Parser parser = Parser.Parser.FromFile(Files.First().FullName);
                 var globalNamespace = new Namespace();
 
-                var lib = Runtime.Interop.DllLoader.LoadDll(@"C:\Users\tn\privat\bananacake\stdlib\bin\Debug\net5.0\stdlib.dll");
+                var lib = Runtime.Interop.DllLoader.LoadDll(Path.Combine(Runtime.Interop.DllLoader.AssemblyDirectory, @"..\..\..\..\stdlib\bin\Debug\net5.0\stdlib.dll"));
                 foreach (var global in lib.Globals)
                 {
                     globalNamespace.Scope.Declare(global);
