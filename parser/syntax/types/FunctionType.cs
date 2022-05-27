@@ -12,11 +12,12 @@ namespace BCake.Parser.Syntax.Types {
         /// <summary>
         /// Used for native function implementations
         /// </summary>
-        public virtual bool ExpectsThisArg => false;
+        public virtual bool ExpectsThisArg => IsOperatorOverload;
+        public bool IsOperatorOverload => Name.StartsWith("!operator_");
         
         public Type Parent { get; protected set; }
         public Type ReturnType { get; protected set; }
-        public override string FullName { get { return Parent == null ? Name : Parent.FullName + ":" + Name; } }
+        public override string FullName { get { return Parent == null ? Name : Parent.FullName + "." + Name; } }
         public ScopeNode Root { get; protected set; }
         public ParameterType[] Parameters { get; protected set; }
         public FunctionType[] Overloads { get; set; } = new FunctionType[] { };
@@ -127,8 +128,14 @@ namespace BCake.Parser.Syntax.Types {
         {
             var overloads = Overloads.Prepend(this);
             foreach (var o in overloads)
+            {
+                // in case this overload is an operator overload that expects a this arg
+                if (o.ExpectsThisArg)
+                    argTypes = argTypes.Skip(1).ToArray();
+
                 if (!o.ParameterListDiffers(argTypes))
                     return o;
+            }
             return null;
         }
 

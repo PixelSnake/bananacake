@@ -6,7 +6,6 @@ using BCake.Runtime.Nodes.Value;
 namespace BCake.Array {
     public class ArrayConstructor : NativeFunctionType {
         public static NativeFunctionType Implementation = new ArrayConstructor();
-        public override bool ExpectsThisArg => false;
 
         private ArrayConstructor() : base(
             Array.Implementation.Scope,

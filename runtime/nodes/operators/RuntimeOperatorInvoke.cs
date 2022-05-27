@@ -26,7 +26,7 @@ namespace BCake.Runtime.Nodes.Operators {
 
             var argumentsNode = Operator.Right.Root as ArgumentsNode;
             var arguments = argumentsNode.Arguments;
-            if (!(function is NativeFunctionType)) arguments = arguments.Where(a => !a.OnlyNative).ToArray();
+            if (!function.ExpectsThisArg) arguments = arguments.Where(a => !a.IsThisArg).ToArray();
 
             var argumentsValues = arguments
                 .Select(arg => {

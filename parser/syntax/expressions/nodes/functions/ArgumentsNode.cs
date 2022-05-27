@@ -37,11 +37,11 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Functions {
 
         public class Argument {
             public Expression Expression { get; protected set; }
-            public bool OnlyNative { get; protected set; }
+            public bool IsThisArg { get; protected set; }
 
-            public Argument(Expression expression, bool onlyNative = false) {
+            public Argument(Expression expression, bool isThisArg = false) {
                 Expression = expression;
-                OnlyNative = onlyNative;
+                IsThisArg = isThisArg;
             }
         }
     }

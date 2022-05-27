@@ -7,16 +7,20 @@ using BCake.Runtime.Nodes.Value;
 
 namespace BCake.Std {
     public class Print : NativeFunctionType {
-        public static NativeFunctionType Implementation = new Print();
+        public static NativeFunctionType Implementation = new Print(IStringCast.IStringCast.Implementation, true);
         public override bool ExpectsThisArg => false;
 
-        private Print() : base(
+        private Print(Type paramType, bool initOverloads = false) : base(
             Namespace.Global.Scope,
             null,
             "print",
             new ParameterType[] {
-                 new ParameterType(null, IStringCast.IStringCast.Implementation, "s"),
-            }
+                 new ParameterType(null, paramType, "s"),
+            },
+            initOverloads ? new NativeFunctionType[]
+            {
+                new Print(StringValueNode.Type),
+            } : null
         ) {}
 
         public override RuntimeValueNode Evaluate(RuntimeScope scope, RuntimeValueNode[] arguments) {
@@ -28,6 +32,10 @@ namespace BCake.Std {
                     var caster = civn.RuntimeScope.GetValue("!as_string") as RuntimeFunctionValueNode;
 
                     System.Console.Write((string)caster.Invoke(civn.RuntimeScope, arguments).Value);
+                    break;
+
+                default:
+                    System.Console.Write(arg);
                     break;
             }
 

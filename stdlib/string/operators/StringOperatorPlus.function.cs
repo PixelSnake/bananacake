@@ -6,14 +6,12 @@ using BCake.Parser.Syntax.Types;
 namespace BCake.String.Operators {
     public class StringOperatorPlus : NativeFunctionType {
         public static NativeFunctionType Implementation = new StringOperatorPlus();
-        public override bool ExpectsThisArg => true;
 
         private StringOperatorPlus() : base(
             StringValueNode.Type.Scope,
             StringValueNode.Type,
             "!operator_plus",
             new ParameterType[] { 
-                new ParameterType(null, StringValueNode.Type, "this"),
                 new ParameterType(null, StringValueNode.Type, "other")
              }
         ) {

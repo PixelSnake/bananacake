@@ -1,14 +1,32 @@
+interface IPlusOp {
+    public IPlusOp operator_plus(IPlusOp other);
+}
+
 class Foo {
     int value;
 
     public Foo(this.value) {}
 
-    public cast string() { return value as string + "test"; }
+    public cast string() { return value as string; }
+    public Foo operator_plus(Foo other) {
+        return new Foo(value + other.value);
+    }
 }
 
 int main() {
     Foo f1 = new Foo(1337);
-    print(f1);
+    Foo f2 = new Foo(10);
+
+    Foo sum = add(f1, f2);
+    print2(sum);
 
     return 0;
+}
+
+void print2(IStringCast value) {
+    println(value);
+}
+
+IPlusOp add(IPlusOp a, IPlusOp b) {
+    return a + b;
 }

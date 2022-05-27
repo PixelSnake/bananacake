@@ -18,6 +18,7 @@ int main() {
     Foo f1 = new Foo(1337);
     Foo f2 = new Foo(10);
     print2(f1);
+    print2(f2);
 
     print2(f1 + f2);
 

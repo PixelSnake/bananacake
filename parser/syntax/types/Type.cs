@@ -10,6 +10,7 @@ namespace BCake.Parser.Syntax.Types {
 
                 var typeName = Scope.FullName;
                 if (typeName == null || typeName.Length < 1) return Name;
+                else if (typeName.EndsWith(Name)) return typeName;
                 else return typeName + "." + Name;
             }
         }

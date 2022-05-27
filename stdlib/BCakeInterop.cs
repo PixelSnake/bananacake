@@ -20,13 +20,14 @@ public class BCakeInterop : IInteropEntryPoint
 
     public void Unsafe_Declare()
     {
-        IntValueNode.Type.Scope.Declare(IntToStringCast.Implementation);
         IntValueNode.Type.Scope.Declare(
+            IntToStringCast.Implementation,
             IntegerOperatorPlus.Implementation
         );
 
         StringValueNode.Type.Scope.Declare(
-            StringOperatorPlus.Implementation
+            StringOperatorPlus.Implementation,
+            IStringCast.Implementation
         );
     }
 }
