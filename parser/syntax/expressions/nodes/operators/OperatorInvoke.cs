@@ -86,7 +86,7 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
             var argList = tokens.Take(argListClose).ToArray();
 
             var arguments = ArgumentsNode.Parse(_functionNode, scope, argList);
-            var overload = Function.GetMatchingOverload(arguments.Arguments);
+            var overload = Function.GetMatchingOverload(arguments.Arguments, FunctionType.ArgumentParameterSpecificity.ParameterMoreSpecific);
             if (overload == null) {
                 if (argList.Length > 0) throw new InvalidArgumentsException(argList.FirstOrDefault(), Function, arguments.Arguments);
                 else throw new InvalidArgumentsException(tokens[0], Function, arguments.Arguments);

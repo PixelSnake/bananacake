@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BCake.Parser.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace BCake.Parser.Errors
             Message = $"Error in {token.FilePath}({token.Line},{token.Column}): {message}";
         }
 
-        public Exception ToException() => new Exception(Message);
+        public Exception ToException() => new ExceptionBase(Message);
 
         public static Error Multiple(params Error[] errors)
         {

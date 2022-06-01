@@ -35,4 +35,11 @@ public static class EnumerableExtensions {
     public static string JoinString(this IEnumerable<string> list, string separator) {
         return string.Join(separator, list);
     }
+
+    public static T FirstOr<T>(this IEnumerable<T> list, T orValue)
+    {
+        var res = list.ToArray();
+        if (res.Length == 0) return orValue;
+        return res[0];
+    }
 }

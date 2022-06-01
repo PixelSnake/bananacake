@@ -13,7 +13,7 @@ namespace BCake {
 
         public static int Main(string[] args) {
             Console.WriteLine("BananaCake Compiler Version 0.1.0");
-            Console.WriteLine("Copyright PixelSnake 2019-2022, all rights reserved");
+            Console.WriteLine($"Copyright PixelSnake 2019-{ DateTime.Now.Year }, all rights reserved");
             Console.WriteLine();
 
             ParseArguments(args);
@@ -29,7 +29,14 @@ namespace BCake {
                 Parser.Parser parser = Parser.Parser.FromFile(Files.First().FullName);
                 var globalNamespace = new Namespace();
 
-                var lib = Runtime.Interop.DllLoader.LoadDll(Path.Combine(Runtime.Interop.DllLoader.AssemblyDirectory, @"..\..\..\..\stdlib\bin\Debug\net5.0\stdlib.dll"));
+                var stdlibPath = Path.Combine(Runtime.Interop.DllLoader.AssemblyDirectory, @"..\..\..\..\stdlib\bin\Debug\net5.0\stdlib.dll");
+                if (!File.Exists(stdlibPath))
+                {
+                    Console.WriteLine($"Unable to load stdlib - file \"{ stdlibPath }\" not found.");
+                    return 1;
+                }
+
+                var lib = Runtime.Interop.DllLoader.LoadDll(stdlibPath);
                 foreach (var global in lib.Globals)
                 {
                     globalNamespace.Scope.Declare(global);
@@ -41,7 +48,7 @@ namespace BCake {
 
                 var interpreter = new Runtime.Interpreter(globalNamespace);
                 return interpreter.Run();
-            } catch (TokenException e) {
+            } catch (ExceptionBase e) {
                 Console.WriteLine(e.Message);
                 return 1;
             } catch (Exception e) {
@@ -53,6 +60,12 @@ namespace BCake {
         private static void ParseArguments(string[] args) {
             for (var i = 0; i < args.Length; ++i) {
                 var arg = args[i];
+
+                if (!File.Exists(arg))
+                {
+                    Console.WriteLine($"File \"{ arg }\" not found.");
+                    throw new FileNotFoundException();
+                }
 
                 Files.Add(new FileInfo(arg));
             }

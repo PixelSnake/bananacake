@@ -65,7 +65,7 @@ namespace BCake.Runtime.Nodes.Operators {
                 if (!(left is RuntimeFunctionValueNode)) throw new Exceptions.RuntimeException("Cannot invoke non-function", Operator.Left.DefiningToken);
 
                 var functionType = left.Value as FunctionType;
-                var overload = functionType.GetMatchingOverload(arguments);
+                var overload = functionType.GetMatchingOverload(arguments, FunctionType.ArgumentParameterSpecificity.Bidirectional);
 
                 runtimeFunction = new RuntimeFunction(
                     overload,

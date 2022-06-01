@@ -13,7 +13,7 @@ namespace BcakeAcceptanceTests.Support.Context
 {
     public class ParserContext
     {
-        private string BCakeExePath => AppDomain.CurrentDomain.BaseDirectory + @"..\..\..\..\bananacake\bin\Debug\netcoreapp5.0\bcake.exe";
+        private string BCakeExePath => AppDomain.CurrentDomain.BaseDirectory + @"..\..\..\..\bundle\bin\Debug\netcoreapp5.0\bundle.exe";
 
         public bool HasErrors { get; private set; }
         public string? ErrorMessage { get; private set; }
@@ -42,7 +42,7 @@ namespace BcakeAcceptanceTests.Support.Context
 
         public void Run()
         {
-            var tempFile = "temp\\" + Guid.NewGuid().ToString() + ".bcake";
+            var tempFile = AppDomain.CurrentDomain.BaseDirectory + "temp\\" + Guid.NewGuid().ToString() + ".bcake";
 
             if (!Directory.Exists("temp")) Directory.CreateDirectory("temp");
             File.WriteAllText(tempFile, _code);

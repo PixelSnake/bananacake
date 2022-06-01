@@ -129,7 +129,7 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
                     }
                 }
 
-                throw new TypeException(e.DefiningToken, e.ReturnType, other.ReturnType);
+                throw new TypeException(DefiningToken, e.ReturnType, other.ReturnType);
             }
         }
     }

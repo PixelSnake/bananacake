@@ -45,7 +45,7 @@ namespace BCake.Parser.Syntax.Types
                             var res = FulfillsFunctionOverride(prototype as FunctionType, member as FunctionType);
                             if (res.HasErrors())
                             {
-                                if (!res.Value<bool>())
+                                if (!res.BoolValue())
                                     result = false;
 
                                 foreach (var error in res.Errors())
@@ -67,20 +67,29 @@ namespace BCake.Parser.Syntax.Types
 
         private static IEnumerable<Result> FulfillsFunctionOverride(FunctionType prototypeFunc, FunctionType overrideFunc)
         {
-            var result = true;
+            yield return ResultSense.FalseDominates;
 
             if (prototypeFunc.ReturnType != overrideFunc.ReturnType)
             {
-                result = false;
-                yield return new OverrideFunctionReturnTypeMismatchError(prototypeFunc, overrideFunc, overrideFunc.DefiningToken);
+                if (prototypeFunc.ReturnType is InheritableType protoInhType
+                    && overrideFunc.ReturnType is InheritableType overrideInhType
+                    && overrideInhType.IsDescendantOf(protoInhType))
+                {
+                    yield return Result.True;
+                }
+                else
+                {
+                    yield return Result.False;
+                    yield return new OverrideFunctionReturnTypeMismatchError(prototypeFunc, overrideFunc, overrideFunc.DefiningToken);
+                }
             }
-            if (overrideFunc.ParameterListDiffers(prototypeFunc))
+            if (prototypeFunc.ParameterListDiffers(overrideFunc))
             {
-                result = false;
+                yield return Result.False;
                 yield return new OverrideFunctionParameterListMismatchError(prototypeFunc, overrideFunc, overrideFunc.DefiningToken);
             }
 
-            yield return new ResultValue<bool>(result);
+            yield return Result.True;
         }
     }
 }

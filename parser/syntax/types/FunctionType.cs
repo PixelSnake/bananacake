@@ -120,11 +120,11 @@ namespace BCake.Parser.Syntax.Types {
             foreach (var o in Overloads) o.Root = ScopeNode.Parse(o.DefiningToken, o.Scope, o.Tokens);
         }
 
-        public FunctionType GetMatchingOverload(Expressions.Nodes.Functions.ArgumentsNode.Argument[] args)
+        public FunctionType GetMatchingOverload(Expressions.Nodes.Functions.ArgumentsNode.Argument[] args, ArgumentParameterSpecificity specificity = ArgumentParameterSpecificity.ArgumentMoreSpecific)
         {
-            return GetMatchingOverload(args.Select(a => a.Expression.ReturnType).ToArray());
+            return GetMatchingOverload(args.Select(a => a.Expression.ReturnType).ToArray(), specificity);
         }
-        public FunctionType GetMatchingOverload(Type[] argTypes)
+        public FunctionType GetMatchingOverload(Type[] argTypes, ArgumentParameterSpecificity specificity = ArgumentParameterSpecificity.ArgumentMoreSpecific)
         {
             var overloads = Overloads.Prepend(this);
             foreach (var o in overloads)
@@ -133,7 +133,7 @@ namespace BCake.Parser.Syntax.Types {
                 if (o.ExpectsThisArg)
                     argTypes = argTypes.Skip(1).ToArray();
 
-                if (!o.ParameterListDiffers(argTypes))
+                if (!ParameterListDiffers(o.Parameters.Select(p => p.Type), argTypes, specificity))
                     return o;
             }
             return null;
@@ -143,18 +143,33 @@ namespace BCake.Parser.Syntax.Types {
             return ParameterListDiffers(other.Parameters.Select(p => p.Type));
         }
         public bool ParameterListDiffers(IEnumerable<Type> _arguments) {
-            var arguments = _arguments.ToList();
+            return ParameterListDiffers(_arguments, Parameters.Select(p => p.Type));
+        }
+        public static bool ParameterListDiffers(IEnumerable<Type> _argsParent, IEnumerable<Type> _argsChild, ArgumentParameterSpecificity specificity = ArgumentParameterSpecificity.ArgumentMoreSpecific)
+        {
+            var argsParent = _argsParent.ToArray();
+            var argsChild = _argsChild.ToArray();
 
-            if (Parameters.Length != arguments.Count) return true;
+            if (argsChild.Length != argsParent.Length) return true;
 
-            for (var i = 0; i < Parameters.Length; ++i) {
-                if (Parameters[i].Type.FullName != arguments[i].FullName)
+            for (var i = 0; i < argsChild.Length; ++i)
+            {
+                if (argsChild[i].FullName != argsParent[i].FullName)
                 {
-                    var typeParam = Parameters[i].Type;
-                    var typeArg = arguments[i];
+                    var typeParam = argsChild[i] as InheritableType;
+                    var typeArg = argsParent[i] as InheritableType;
 
-                    if (!(typeParam is InheritableType iParam && typeArg is InheritableType iArg && InheritableType.IsDescendantOf(iParam, iArg)))
-                        return true;
+                    if (typeParam == null || typeArg == null) return true;
+
+                    var argInhParam = InheritableType.IsDescendantOf(typeParam, typeArg);
+                    var paramInhArg = InheritableType.IsDescendantOf(typeArg, typeParam);
+
+                    switch (specificity)
+                    {
+                        case ArgumentParameterSpecificity.ArgumentMoreSpecific: return !argInhParam;
+                        case ArgumentParameterSpecificity.ParameterMoreSpecific: return !paramInhArg;
+                        case ArgumentParameterSpecificity.Bidirectional: return !(argInhParam || paramInhArg);
+                    }
                 }
             }
 
@@ -180,6 +195,13 @@ namespace BCake.Parser.Syntax.Types {
                     : base(token, member.Type, member.Name) {
                 Member = member;
             }
+        }
+
+        public enum ArgumentParameterSpecificity
+        {
+            ArgumentMoreSpecific = 0,
+            ParameterMoreSpecific,
+            Bidirectional,
         }
     }
 }

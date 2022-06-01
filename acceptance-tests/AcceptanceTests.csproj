@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\bundle\bundle.csproj" />
     <ProjectReference Include="..\runtime\runtime.csproj" />
   </ItemGroup>
 

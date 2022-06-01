@@ -2,7 +2,7 @@ interface IPlusOp {
     public IPlusOp operator_plus(IPlusOp other);
 }
 
-class Foo {
+class Foo : IPlusOp {
     int value;
 
     public Foo(this.value) {}
@@ -17,8 +17,8 @@ int main() {
     Foo f1 = new Foo(1337);
     Foo f2 = new Foo(10);
 
-    Foo sum = add(f1, f2);
-    print2(sum);
+    IPlusOp sum = add(f1, f2);
+    print2(sum as Foo);
 
     return 0;
 }
