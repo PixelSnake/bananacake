@@ -1,3 +1,6 @@
+using BCake.Parser.Errors;
+using System.Collections.Generic;
+
 namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
     [Operator(
         Symbol = "return",
@@ -8,8 +11,16 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
 
         public OperatorReturn() {}
 
-        public override void OnCreated(Token token, Scopes.Scope scope) {
-            ParentFunction = scope.GetClosestFunction() ?? throw new Exceptions.InvalidReturnException(token);
+        public override IEnumerable<Result> OnCreated(Token token, Scopes.Scope scope) {
+            yield return ResultSense.FalseDominates;
+
+            ParentFunction = scope.GetClosestFunction();
+            if (ParentFunction == null)
+            {
+                yield return new InvalidReturnError(token);
+                yield break;
+            }
+
             CheckRightReturnType(ParentFunction.ReturnType);
         }
     }

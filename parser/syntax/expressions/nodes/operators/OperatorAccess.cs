@@ -1,4 +1,5 @@
-using System.Linq;
+using System.Collections.Generic;
+using BCake.Parser.Errors;
 using BCake.Parser.Syntax.Types;
 
 namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
@@ -8,16 +9,16 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
         CheckReturnTypes = false
     )]
     public class OperatorAccess : Operator, IRValue {
-        public Types.Type SymbolToAccess { get; protected set; }
-        public Types.Type MemberToAccess { get; protected set; }
+        public Type SymbolToAccess { get; protected set; }
+        public Type MemberToAccess { get; protected set; }
 
-        public override Types.Type ReturnType {
+        public override Type ReturnType {
             get {
                 return Right.ReturnType;
             }
         }
 
-        public Types.Type ReturnSymbol {
+        public Type ReturnSymbol {
             get {
                 switch (Right.Root) {
                     case SymbolNode n: return n.Symbol;
@@ -34,13 +35,15 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
             return symbol;
         }
 
-        public override void OnCreated(Token token, Scopes.Scope scope) {
+        public override IEnumerable<Result> OnCreated(Token token, Scopes.Scope scope) {
+            yield return ResultSense.FalseDominates;
+
             var leftSymbol = Left.Root as SymbolNode;
-            if (leftSymbol == null) return;
+            if (leftSymbol == null) yield break;
 
             // we need to treat the left hand side specifically, if it is not a type
             switch (leftSymbol.Symbol) {
-                case ClassType t: return;
+                case ClassType: yield break;
 
                 default:
                     SymbolToAccess = leftSymbol.Symbol;
@@ -50,7 +53,7 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
                     var isSameType = leftType.FullName == scope.GetClosestType()?.FullName;
 
                     var canAccess = MemberToAccess.Access == Access.@public || scope.IsChildOf(MemberToAccess.Scope) || isSameType;
-                    if (!canAccess) throw new BCake.Parser.Exceptions.AccessViolationException(Right.DefiningToken, MemberToAccess, scope);
+                    if (!canAccess) throw new Exceptions.AccessViolationException(Right.DefiningToken, MemberToAccess, scope);
                     break;
             }
         }

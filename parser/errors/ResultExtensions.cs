@@ -9,7 +9,28 @@ namespace BCake.Parser.Errors
     public static class ResultExtensions
     {
         /// <summary>
-        /// Returns the first ResultSense object in the result enumerable
+        /// Packs the results of a nested method to a multi-result that will be unpacked during further processing
+        /// </summary>
+        public static MultiResult Pack(this IEnumerable<Result> res) => new MultiResult(res);
+
+        public static IEnumerable<Result> Unpack(this IEnumerable<Result> res)
+        {
+            foreach (var r in res)
+            {
+                if (r is MultiResult multi)
+                {
+                    foreach (var _r in multi.Results.Unpack())
+                        yield return _r;
+                }
+                else
+                {
+                    yield return r;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns the first ResultSense object in the result enumerable. Nested result senses are ignored
         /// </summary>
         public static ResultSense Sense(this IEnumerable<Result> res) {
             var senses = res.Where(r => r is ResultSense).Cast<ResultSense>().ToArray();
@@ -21,35 +42,53 @@ namespace BCake.Parser.Errors
         /// <summary>
         /// Returns all results except for any ResultSense objects
         /// </summary>
-        public static IEnumerable<Result> WithoutSense(this IEnumerable<Result> res) => res.
-            Where(r => r is not ResultSense);
+        public static IEnumerable<Result> WithoutSense(this IEnumerable<Result> res)
+            => res.Where(r => r is not ResultSense).Unpack();
         
         /// <summary>
         /// The first bool result
         /// </summary>
-        public static bool FirstBool(this IEnumerable<Result> res) =>
-            (res.First(r => r is ResultValue<bool>) as ResultValue<bool>).Value;
+        public static bool FirstBool(this IEnumerable<Result> res)
+            => (res.Unpack().First(r => r is ResultValue<bool>) as ResultValue<bool>).Value;
 
         /// <summary>
         /// All errors
         /// </summary>
-        public static IEnumerable<Error> Errors(this IEnumerable<Result> res) => res
-            .Where(r => r.IsError)
+        public static IEnumerable<Error> Errors(this IEnumerable<Result> res)
+            => res.Unpack().Where(r => r.IsError)
             .Cast<Error>();
         
         /// <summary>
         /// All errors
         /// </summary>
-        public static IEnumerable<BaseResultValue> Values(this IEnumerable<Result> res) => res
-            .Where(r => r is BaseResultValue)
+        public static IEnumerable<BaseResultValue> Values(this IEnumerable<Result> res)
+            => res.Unpack().Where(r => r is BaseResultValue)
             .Cast<BaseResultValue>();
 
         /// <summary>
         /// Whether or not the method has returned any errors
         /// </summary>
-        public static bool HasErrors(this IEnumerable<Result> res) => res
-            .Errors()
+        public static bool HasErrors(this IEnumerable<Result> res)
+            => res.Unpack().Errors()
             .Any();
+
+        /// <summary>
+        /// Specifies a callback method for when an error occurrs
+        /// </summary>
+        public static IEnumerable<Result> Catch(this IEnumerable<Result> res, Action<Error[]> onErrors)
+        {
+            var errors = res.Unpack().Errors().ToArray();
+
+            if (errors.Length > 0)
+                onErrors(errors);
+
+            return res;
+        }
+
+        /// <summary>
+        /// If the method returns one or more errors, they are automatically thrown as an exception
+        /// </summary>
+        public static IEnumerable<Result> Throw(this IEnumerable<Result> res) => res.Unpack().Catch(errs => throw Error.Multiple(errs).ToException());
 
         /// <summary>
         /// The first or default value of type <see cref="T"/> returned
@@ -59,6 +98,7 @@ namespace BCake.Parser.Errors
             if (typeof(T) == typeof(bool)) throw new Exception("Result sense matters! Use BoolValue instead");
 
             return res
+                .Unpack()
                 .Where(r => !r.IsError)
                 .Cast<BaseResultValue>()
                 .Select(v => (T)v.Value)
@@ -71,6 +111,7 @@ namespace BCake.Parser.Errors
         public static bool BoolValue(this IEnumerable<Result> res)
         {
             var values = res
+                .Unpack()
                 .Where(r => r is ResultValue<bool>)
                 .Cast<ResultValue<bool>>()
                 .ToArray();

@@ -14,8 +14,8 @@ class Foo : IPlusOp {
 }
 
 int main() {
-    Foo f1 = new Foo(1337);
-    Foo f2 = new Foo(10);
+    Foo f1 = new Foo(1000 - 1337);
+    Foo f2 = new Foo(-10);
 
     IPlusOp sum = add(f1, f2);
     print2(sum as Foo);

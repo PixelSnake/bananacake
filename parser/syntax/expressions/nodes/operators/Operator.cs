@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using BCake.Parser.Exceptions;
 using BCake.Parser.Syntax.Types;
+using BCake.Parser.Errors;
 
 namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
     public abstract class Operator : Node {
@@ -74,7 +75,10 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
             checkReturnTypes = operatorAttr.CheckReturnTypes;
         }
 
-        public virtual void OnCreated(Token token, Scopes.Scope scope) {}
+        public virtual IEnumerable<Result> OnCreated(Token token, Scopes.Scope scope)
+        {
+            yield return Result.True;
+        }
 
         public static OperatorAttribute GetOperatorMetadata<T>() {
             return GetOperatorMetadata(typeof(T));
@@ -92,7 +96,9 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
             op.DefiningToken = token;
             op.Left = op.ParseLeft(scope, left, typeSource);
             op.Right = op.ParseRight(scope, right, op.Left?.ReturnType?.Scope);
-            op.OnCreated(token, scope);
+            
+            op.OnCreated(token, scope).Throw();
+            
             return op;
         }
 

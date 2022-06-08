@@ -1,3 +1,6 @@
+using BCake.Parser.Errors;
+using System.Collections.Generic;
+
 namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
     [Operator(
         Symbol = "new",
@@ -8,8 +11,9 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
 
         public OperatorNew() {}
 
-        public override void OnCreated(Token token, Scopes.Scope scope) {
-            
+        public override IEnumerable<Result> OnCreated(Token token, Scopes.Scope scope)
+        {
+            yield return Result.True;
         }
     }
 }

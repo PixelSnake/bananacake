@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace BCake.Parser.Exceptions {
-    public class InvalidTypeArgumentListException : TokenException {
+    public class InvalidTypeArgumentListException : Error {
         public InvalidTypeArgumentListException(BCake.Parser.Token token, BCake.Parser.Syntax.Types.ClassType classType)
             : base($"Invalid type argument list - the type { classType.Name } is not generic", token)
         {}

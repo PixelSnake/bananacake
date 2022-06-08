@@ -1,7 +1,7 @@
 using System.Linq;
 
 namespace BCake.Parser.Exceptions {
-    public class DuplicateFunctionDeclarationException : TokenException {
+    public class DuplicateFunctionDeclarationException : Error {
         public DuplicateFunctionDeclarationException(
             BCake.Parser.Token token,
             BCake.Parser.Syntax.Types.FunctionType function

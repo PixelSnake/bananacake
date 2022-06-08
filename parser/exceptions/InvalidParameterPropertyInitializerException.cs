@@ -2,7 +2,7 @@ using System.Linq;
 using BCake.Parser.Syntax.Types;
 
 namespace BCake.Parser.Exceptions {
-    public class InvalidParameterPropertyInitializerException : TokenException {
+    public class InvalidParameterPropertyInitializerException : Error {
         public InvalidParameterPropertyInitializerException(BCake.Parser.Token[] tokens)
                 : base($"Invalid property initializer parameter", tokens.FirstOrDefault())
         {}

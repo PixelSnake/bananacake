@@ -26,7 +26,7 @@ namespace BCake.Parser.Syntax.Types
         /// </summary>
         public static IEnumerable<Result> FulfillsInheritanceConstraints(InterfaceType interf, InheritableType derivedType)
         {
-            var result = true;
+            yield return ResultSense.FalseDominates;
 
             foreach (var (name, prototype) in interf.Scope.AllMembers)
             {
@@ -37,7 +37,7 @@ namespace BCake.Parser.Syntax.Types
                     {
                         if (member is not FunctionType)
                         {
-                            result = false;
+                            yield return Result.False;
                             yield return new OverrideMemberTypeMismatchError(prototype, member, member.DefiningToken);
                         }
                         else
@@ -46,23 +46,20 @@ namespace BCake.Parser.Syntax.Types
                             if (res.HasErrors())
                             {
                                 if (!res.BoolValue())
-                                    result = false;
+                                    yield return Result.False;
 
                                 foreach (var error in res.Errors())
                                     yield return error;
                             }
-                                
                         }
                     }
                 }
                 else
                 {
-                    result = false;
+                    yield return Result.False;
                     yield return new OverrideMissingError(prototype, derivedType, derivedType.DefiningToken);
                 }
             }
-
-            yield return new ResultValue<bool>(result);
         }
 
         private static IEnumerable<Result> FulfillsFunctionOverride(FunctionType prototypeFunc, FunctionType overrideFunc)
@@ -88,8 +85,6 @@ namespace BCake.Parser.Syntax.Types
                 yield return Result.False;
                 yield return new OverrideFunctionParameterListMismatchError(prototypeFunc, overrideFunc, overrideFunc.DefiningToken);
             }
-
-            yield return Result.True;
         }
     }
 }

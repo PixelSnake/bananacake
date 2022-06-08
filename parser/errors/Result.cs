@@ -13,4 +13,14 @@ namespace BCake.Parser.Errors
 
         public virtual bool IsError => false;
     }
+
+    public class MultiResult : Result
+    {
+        public readonly IEnumerable<Result> Results;
+
+        public MultiResult(IEnumerable<Result> results)
+        {
+            Results = results;
+        }
+    }
 }

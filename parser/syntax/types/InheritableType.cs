@@ -29,6 +29,20 @@ namespace BCake.Parser.Syntax.Types
                 if (type.Root is SymbolNode symbolNode && symbolNode.Symbol is InheritableType)
                 {
                     baseTypes.Add(symbolNode.Symbol as InheritableType);
+
+                    // TODO: Declare self to base type caster here
+
+                    //var childTypeCaster = new FunctionType(
+                    //    Token.Anonymous(""),
+                    //    this,
+                    //    Access.@public,
+                    //    this,
+                    //    $"!as_{ Name }",
+                    //    new FunctionType.ParameterType[] {},
+                    //    new Token[] {}
+                    //);
+
+                    //Scope.Declare()
                 }
                 else
                 {
@@ -52,9 +66,7 @@ namespace BCake.Parser.Syntax.Types
                 if (baseType is ClassType) throw new System.NotImplementedException("Class inheritance is not yet supported");
                 if (baseType is InterfaceType interfaceType)
                 {
-                    var res = InterfaceType.FulfillsInheritanceConstraints(interfaceType, this);
-                    if (res.HasErrors())
-                        throw Error.Multiple(res.Errors().ToArray()).ToException();
+                    InterfaceType.FulfillsInheritanceConstraints(interfaceType, this).Throw();
                 }
             }
         }

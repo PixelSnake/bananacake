@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace BCake.Parser.Exceptions {
-    public class InvalidArgumentsException : TokenException {
+    public class InvalidArgumentsException : Error {
         public InvalidArgumentsException(
             Token token,
             FunctionType function,

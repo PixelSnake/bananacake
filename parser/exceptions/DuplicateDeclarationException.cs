@@ -1,5 +1,5 @@
 namespace BCake.Parser.Exceptions {
-    public class DuplicateDeclarationException : TokenException {
+    public class DuplicateDeclarationException : Error {
         public DuplicateDeclarationException(
             BCake.Parser.Token token,
             BCake.Parser.Syntax.Types.Type member

@@ -15,6 +15,9 @@ namespace BCake.Runtime.Nodes.Operators {
             ).Evaluate();
 
             var right = (Operator.Right.Root as SymbolNode).Symbol;
+
+            if (left.Type == right) return left;
+
             var casterFunction = left.RuntimeScope.GetValue($"!as_{ right.Name }");
 
             var args = left.Type is PrimitiveType ? new RuntimeValueNode[] { left } : new RuntimeValueNode[] {};

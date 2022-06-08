@@ -32,11 +32,11 @@ namespace BCake.Std {
                 case RuntimeClassInstanceValueNode civn:
                     var caster = civn.RuntimeScope.GetValue("!as_string") as RuntimeFunctionValueNode;
 
-                    System.Console.Write((string)caster.Invoke(civn.RuntimeScope, arguments).Value);
+                    System.Console.WriteLine((string)caster.Invoke(civn.RuntimeScope, arguments).Value);
                     break;
 
                 default:
-                    System.Console.Write(arg);
+                    System.Console.WriteLine(arg);
                     break;
             }
 

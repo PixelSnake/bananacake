@@ -1,5 +1,5 @@
 namespace BCake.Parser.Exceptions {
-    public class AccessViolationException : TokenException {
+    public class AccessViolationException : Error {
         public AccessViolationException(
             BCake.Parser.Token token,
             BCake.Parser.Syntax.Types.Type member,

@@ -560,6 +560,9 @@ namespace AcceptanceTests.Features
 #line 202
   testRunner.Then("an error is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
+#line 203
+  testRunner.And("the error contains \"No matching overload\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

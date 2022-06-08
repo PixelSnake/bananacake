@@ -1,7 +1,7 @@
 using BCake.Parser.Syntax.Types;
 
 namespace BCake.Parser.Exceptions {
-    public class TypeException : TokenException {
+    public class TypeException : Error {
         public TypeException(
             BCake.Parser.Token token,
             Type t1, Type t2

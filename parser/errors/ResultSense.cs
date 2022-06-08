@@ -14,19 +14,19 @@ namespace BCake.Parser.Errors
     public class ResultSense : Result
     {
         /// <summary>
-        /// One false result will make the overall result equal false
+        /// One false result will make the overall result equal false. Default: true
         /// </summary>
         public static readonly ResultSense FalseDominates = new ResultSense(ResultDominance.FalseDominates, true);
         /// <summary>
-        /// One true result will make the overall result equal true
+        /// One true result will make the overall result equal true. Default: false
         /// </summary>
         public static readonly ResultSense TrueDominates = new ResultSense(ResultDominance.TrueDominates, false);
         /// <summary>
-        /// The first result will dictate the overall result
+        /// The first result will dictate the overall result. Default: false
         /// </summary>
         public static readonly ResultSense First = new ResultSense(ResultDominance.First, false);
         /// <summary>
-        /// The last result will dictate the overall result
+        /// The last result will dictate the overall result. Default: false
         /// </summary>
         public static readonly ResultSense Last = new ResultSense(ResultDominance.Last, false);
 

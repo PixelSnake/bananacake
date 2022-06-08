@@ -1,5 +1,5 @@
 namespace BCake.Parser.Exceptions {
-    public class UndefinedSymbolException : TokenException {
+    public class UndefinedSymbolException : Error {
         public UndefinedSymbolException(
             BCake.Parser.Token token,
             string name,

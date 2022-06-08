@@ -1,7 +1,7 @@
 using BCake.Parser.Syntax.Expressions.Nodes.Operators;
 
 namespace BCake.Parser.Exceptions {
-    public class InvalidArgumentException : TokenException {
+    public class InvalidArgumentException : Error {
         public InvalidArgumentException(
             BCake.Parser.Token token,
             OperatorAttribute.ParameterType expectedType
