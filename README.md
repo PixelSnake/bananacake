@@ -16,7 +16,7 @@ The project contains a central visual studio solution `bcake.sln` that contains 
 
 ## Tests
 
-- [Acceptance tests](https://github.com/PixelSnake/bananacake-tests)
+- [Acceptance tests](/acceptance-tests)
 
 ### Most important features
 
