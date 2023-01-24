@@ -1,6 +1,7 @@
 using System.Linq;
 using BCake.Parser.Exceptions;
 using BCake.Parser.Syntax.Expressions.Nodes.Functions;
+using BCake.Parser.Syntax.Expressions.Nodes.Operators.Syntactical;
 using BCake.Parser.Syntax.Types;
 
 namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
@@ -9,8 +10,9 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
         CheckReturnTypes = false,
         Direction = OperatorAttribute.EvaluationDirection.RightToLeft
     )]
-    public class OperatorInvoke : Operator, IRValue {
+    public class OperatorInvoke : Operator, IRValue, ISymbol {
         public FunctionType Function { get; protected set; }
+        public Type Symbol => Function;
         protected Expression _functionNode;
 
         public OperatorInvoke() { }
@@ -28,8 +30,19 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
 
             switch (_functionNode.Root) {
                 case SymbolNode s: symbol = s.Symbol; break;
-                case OperatorAccess o: symbol = o.ReturnSymbol; break;
-                case Syntactical.OperatorTypeArgument t: symbol = t.ConcreteClassType; break;
+                case OperatorAccess opAccess: symbol = opAccess.ReturnSymbol; break;
+                case OperatorTypeArgument t: symbol = t.ConcreteClassType; break;
+                case OperatorNew opNew:
+                    {
+                        switch (opNew.Right.Root)
+                        {
+                            case SymbolNode s: symbol = s.Symbol; break;
+                            case OperatorTypeArgument t: symbol = t.ConcreteClassType; break;
+                            default: throw new System.Exception("TODO invalid call");
+                        }
+
+                        break;
+                    }
                 default: symbol = _functionNode.ReturnType; break;
             }
 
@@ -107,7 +120,13 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
 
             if (tokens.Length <= 2) return false;
 
-            if (!SymbolNode.CouldBeIdentifier(info.TokensLeft)) {
+            if (!SymbolNode.CouldBeIdentifier(info.TokensLeft))
+            {
+                return false;
+            }
+
+            if (tokens.Last().Value != ")")
+            {
                 return false;
             }
 
@@ -147,13 +166,24 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
                     new Token[] { new Token { Value = operatorFunction.Name } }
                 );
             }
-            else {
+            else if (op.Left.Root is SymbolNode)
+            {
                 left = Operator.Parse(
                     leftScope,
                     leftScope,
                     typeof(OperatorAccess),
                     op.Left.DefiningToken,
                     new Token[] { op.Left.DefiningToken },
+                    new Token[] { new Token { Value = operatorFunction.Name } }
+                );
+            }
+            else {
+                left = Operator.Parse(
+                    leftScope,
+                    leftScope,
+                    typeof(OperatorAccess),
+                    op.Left.DefiningToken,
+                    op.Left,
                     new Token[] { new Token { Value = operatorFunction.Name } }
                 );
             }

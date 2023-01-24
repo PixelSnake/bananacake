@@ -48,8 +48,8 @@ namespace BCake.Runtime.Nodes {
         }
 
         public override RuntimeValueNode Evaluate() {
-            if (Function is NativeFunctionType) {
-                return (Function as NativeFunctionType).Evaluate(RuntimeScope, Arguments);
+            if (Function is NativeFunctionType nft) {
+                return nft.Evaluate(RuntimeScope, Arguments);
             }
             else
             {

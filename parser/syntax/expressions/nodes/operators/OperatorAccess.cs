@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using BCake.Parser.Errors;
+using BCake.Parser.Exceptions;
 using BCake.Parser.Syntax.Types;
+using Type = BCake.Parser.Syntax.Types.Type;
 
 namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
     [Operator(
@@ -8,9 +11,10 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
         Direction = OperatorAttribute.EvaluationDirection.RightToLeft,
         CheckReturnTypes = false
     )]
-    public class OperatorAccess : Operator, IRValue {
+    public class OperatorAccess : Operator, IRValue, ISymbol {
         public Type SymbolToAccess { get; protected set; }
         public Type MemberToAccess { get; protected set; }
+        public Type Symbol => MemberToAccess;
 
         public override Type ReturnType {
             get {
@@ -38,23 +42,43 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
         public override IEnumerable<Result> OnCreated(Token token, Scopes.Scope scope) {
             yield return ResultSense.FalseDominates;
 
-            var leftSymbol = Left.Root as SymbolNode;
-            if (leftSymbol == null) yield break;
+            switch (Left.Root)
+            {
+                case SymbolNode leftSymbol:
+                {
+                    // we need to treat the left hand side specifically, if it is not a type
+                    switch (leftSymbol.Symbol)
+                    {
+                        case ClassType: yield break;
 
-            // we need to treat the left hand side specifically, if it is not a type
-            switch (leftSymbol.Symbol) {
-                case ClassType: yield break;
+                        default:
+                            SymbolToAccess = leftSymbol.Symbol;
+                            MemberToAccess = (Right.Root as ISymbol).Symbol;
+
+                            var leftType = leftSymbol.ReturnType;
+                            var isSameType = leftType.FullName == scope.GetClosestType()?.FullName;
+
+                            var canAccess = MemberToAccess.Access == Access.@public || scope.IsChildOf(MemberToAccess.Scope) || isSameType;
+                            if (!canAccess) throw new Exceptions.AccessViolationException(Right.DefiningToken, MemberToAccess, scope);
+                            break;
+                    }
+
+                    break;
+                }
 
                 default:
-                    SymbolToAccess = leftSymbol.Symbol;
-                    MemberToAccess = (Right.Root as SymbolNode).Symbol;
+                {
+                    SymbolToAccess = Left.ReturnType;
+                    MemberToAccess = (Right.Root as ISymbol).Symbol;
 
-                    var leftType = leftSymbol.ReturnType;
+                    var leftType = Left.ReturnType;
                     var isSameType = leftType.FullName == scope.GetClosestType()?.FullName;
 
                     var canAccess = MemberToAccess.Access == Access.@public || scope.IsChildOf(MemberToAccess.Scope) || isSameType;
                     if (!canAccess) throw new Exceptions.AccessViolationException(Right.DefiningToken, MemberToAccess, scope);
+
                     break;
+                }
             }
         }
     }

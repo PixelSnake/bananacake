@@ -39,10 +39,10 @@ namespace BCake.Parser.Syntax.Expressions {
 
             typeof(OperatorCast),
 
-            typeof(OperatorNew),
-            typeof(OperatorIndex),
             typeof(OperatorInvoke),
             typeof(OperatorAccess),
+            typeof(OperatorNew),
+            typeof(OperatorIndex),
 
             // syntactical
             typeof(OperatorTypeArgument),

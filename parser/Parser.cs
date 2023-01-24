@@ -356,8 +356,17 @@ namespace BCake.Parser {
                             type = TokenType.unknown;
                             valueType = null;
                         }
-                        else if (!_tokenTypeValidator.HasMemberRule(MemberRule.NoPrototypes) && (type == TokenType.function || type == TokenType.cast))
+                        else if (
+                            (!_tokenTypeValidator.HasMemberRule(MemberRule.NoPrototypes) && (type == TokenType.function || type == TokenType.cast))
+                            || (type == TokenType.function && name == "!constructor"))
                         {
+                            Token[] funcBodyTokens = null;
+
+                            if (name == "!constructor")
+                            {
+                                funcBodyTokens = Array.Empty<Token>();
+                            }
+
                             var newFunction = new FunctionType(
                                     definingToken,
                                     targetScope.Type,
@@ -365,10 +374,15 @@ namespace BCake.Parser {
                                     valueType,
                                     name,
                                     argList,
-                                    null
+                                    funcBodyTokens
                                 );
                             targetScope.Declare(newFunction);
+
                             argList = null;
+                            access = Access.@default;
+                            name = null;
+                            type = TokenType.unknown;
+                            valueType = null;
                         } else throw new UnexpectedTokenException(token);
                         break;
 

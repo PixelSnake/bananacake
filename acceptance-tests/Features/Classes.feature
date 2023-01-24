@@ -88,3 +88,21 @@ Scenario: Constructor parameters can be initializers
 	When the code is compiled
 	Then there are no errors
 	And "foo.bar" evaluates to 1337
+
+Scenario: Constructor method bodys can be omitted
+	Given the following class is defined:
+		"""
+		class Foo {
+			public int value;
+
+			public Foo(this.value);
+		}
+		"""
+	And the main function contains the following code:
+		"""
+		Foo foo = new Foo(1234);
+		TEST("foo.value", foo.value);
+		"""
+	When the code is compiled
+	Then there are no errors
+	And "foo.value" evaluates to 1234

@@ -3,9 +3,11 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using BCake.Parser.Syntax.Expressions.Nodes;
+using System.Xml.Linq;
+using BCake.Parser.Syntax.Expressions.Nodes.Operators;
 
 namespace BCake.Parser.Syntax.Expressions.Nodes {
-    public class SymbolNode : Node, ILValue, IRValue {
+    public class SymbolNode : Node, ILValue, IRValue, ISymbol {
         public static readonly string rxIdentifier = @"^[A-Za-z_][A-Za-z_0-9]*(\.[A-Za-z_][A-Za-z_0-9]*)*$";
         public Types.Type Symbol { get; protected set; }
         public override Types.Type ReturnType {
@@ -79,7 +81,19 @@ namespace BCake.Parser.Syntax.Expressions.Nodes {
             return new SymbolNode(token, symbol);
         }
 
+        //public static SymbolNode Anonymous()
+        //{
+
+        //}
+
         public static Types.Type GetSymbol(Scopes.Scope scope, Token token) {
+            // anonymous symbols will be created as placeholders for the parser to do it's thing
+            if (token.Value.StartsWith("!anon:"))
+            {
+                var type = token.Value.Substring("!anon:".Length).Replace("public.", "");
+                return SymbolNode.Parse(scope, Token.Anonymous(type)).ReturnType;
+            }
+
             var simpleSymbol = scope.GetSymbol(token.Value);
             if (simpleSymbol != null) return simpleSymbol;
 

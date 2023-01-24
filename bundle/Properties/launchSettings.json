@@ -6,7 +6,7 @@
     },
     "test debug": {
       "commandName": "Project",
-      "commandLineArgs": "../../../../bcake-acceptance-tests/bin/Debug/net6.0/temp/46ad225a-beba-4a71-a235-024cc4581d11.bcake"
+      "commandLineArgs": "C:\\Users\\tn\\privat\\bananacake\\acceptance-tests\\bin\\Debug\\net6.0\\temp\\ffe4f7fa-f120-475a-9039-5236b14c2d4b.bcake"
     }
   }
 }

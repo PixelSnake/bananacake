@@ -9,7 +9,7 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators.Syntactical {
         Symbol = "<",
         CheckReturnTypes = false
     )]
-    public class OperatorTypeArgument : Operator {
+    public class OperatorTypeArgument : Operator, IRValue {
         public Types.ConcreteClassType ConcreteClassType;
         public Types.Type[] TypeArguments;
         public override Types.Type ReturnType => ConcreteClassType;

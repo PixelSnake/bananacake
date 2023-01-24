@@ -91,6 +91,18 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
             return opSymbolAttr;
         }
 
+        public static Node Parse(Scopes.Scope scope, Scopes.Scope typeSource, System.Type opType, Token token, Expression left, Token[] right)
+        {
+            var op = (Operator)System.Activator.CreateInstance(opType);
+            op.DefiningToken = token;
+            op.Left = left;
+            op.Right = op.ParseRight(scope, right, op.Left?.ReturnType?.Scope);
+
+            op.OnCreated(token, scope).Throw();
+
+            return op;
+        }
+
         public static Node Parse(Scopes.Scope scope, Scopes.Scope typeSource, System.Type opType, Token token, Token[] left, Token[] right) {
             var op = (Operator)System.Activator.CreateInstance(opType);
             op.DefiningToken = token;

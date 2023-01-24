@@ -1,5 +1,6 @@
 using BCake.Parser.Errors;
 using System.Collections.Generic;
+using BCake.Parser.Syntax.Types;
 
 namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
     [Operator(
@@ -7,7 +8,7 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
         Left = OperatorAttribute.ParameterType.None
     )]
     public class OperatorNew : Operator, IRValue {
-        public Types.FunctionType ParentFunction { get; protected set; }
+        public FunctionType ParentFunction { get; protected set; }
 
         public OperatorNew() {}
 
