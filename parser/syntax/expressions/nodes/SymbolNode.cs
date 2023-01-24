@@ -81,19 +81,7 @@ namespace BCake.Parser.Syntax.Expressions.Nodes {
             return new SymbolNode(token, symbol);
         }
 
-        //public static SymbolNode Anonymous()
-        //{
-
-        //}
-
         public static Types.Type GetSymbol(Scopes.Scope scope, Token token) {
-            // anonymous symbols will be created as placeholders for the parser to do it's thing
-            if (token.Value.StartsWith("!anon:"))
-            {
-                var type = token.Value.Substring("!anon:".Length).Replace("public.", "");
-                return SymbolNode.Parse(scope, Token.Anonymous(type)).ReturnType;
-            }
-
             var simpleSymbol = scope.GetSymbol(token.Value);
             if (simpleSymbol != null) return simpleSymbol;
 
