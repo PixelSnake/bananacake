@@ -56,16 +56,7 @@ namespace BCake.Parser.Syntax.Types {
                 var name = keyValuePair.Key;
                 var type = keyValuePair.Value;
                 var function = type as FunctionType;
-
-                var newFunction = new FunctionType(
-                    function.DefiningToken,
-                    this,
-                    function.Access,
-                    makeConcreteType(function.ReturnType),
-                    function.Name,
-                    function.Parameters.Select(declareParameterType).ToArray(),
-                    function.Tokens
-                );
+                var newFunction = function.MakeConcrete(this, makeConcreteType(function.ReturnType), function.Parameters.Select(declareParameterType).ToArray());
                 newFunction.ParseInner();
                 Scope.Declare(newFunction);
             }

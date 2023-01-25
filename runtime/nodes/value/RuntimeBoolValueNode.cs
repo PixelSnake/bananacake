@@ -1,3 +1,4 @@
+using BCake.Parser;
 using BCake.Parser.Syntax.Expressions.Nodes.Value;
 
 namespace BCake.Runtime.Nodes.Value {
@@ -32,13 +33,16 @@ namespace BCake.Runtime.Nodes.Value {
             throw new Exceptions.RuntimeException("", DefiningToken);
         }
 
-        private RuntimeBoolValueNode Wrap(bool value) {
+        private RuntimeBoolValueNode Wrap(bool value) => Wrap(value, DefiningToken, RuntimeScope);
+
+        public static RuntimeBoolValueNode Wrap(bool value, Token definingToken, RuntimeScope scope)
+        {
             return new RuntimeBoolValueNode(
                 new BoolValueNode(
-                    DefiningToken,
+                    definingToken,
                     value
                 ),
-                RuntimeScope
+                scope
             );
         }
     }

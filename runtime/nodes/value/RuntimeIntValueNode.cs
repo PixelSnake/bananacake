@@ -1,3 +1,4 @@
+using BCake.Parser;
 using BCake.Parser.Syntax.Expressions.Nodes.Value;
 
 namespace BCake.Runtime.Nodes.Value {
@@ -42,23 +43,16 @@ namespace BCake.Runtime.Nodes.Value {
             return Wrap((int)Value < (int)other.Value);
         }
 
-        private RuntimeIntValueNode Wrap(int value) {
+        private RuntimeIntValueNode Wrap(int value) => Wrap(value, DefiningToken, RuntimeScope);
+        private RuntimeBoolValueNode Wrap(bool value) => RuntimeBoolValueNode.Wrap(value, DefiningToken, RuntimeScope);
+
+        public static RuntimeIntValueNode Wrap(int value, Token definingToken, RuntimeScope scope) {
             return new RuntimeIntValueNode(
                 new IntValueNode(
-                    DefiningToken,
+                    definingToken,
                     value
                 ),
-                RuntimeScope
-            );
-        }
-
-        private RuntimeBoolValueNode Wrap(bool value) {
-            return new RuntimeBoolValueNode(
-                new BoolValueNode(
-                    DefiningToken,
-                    value
-                ),
-                RuntimeScope
+                scope
             );
         }
     }

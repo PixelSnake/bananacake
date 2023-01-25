@@ -29,6 +29,13 @@ namespace BCake.Parser.Syntax.Types {
             ReturnType = returnType;
             Parameters = parameters;
         }
+        
+        protected FunctionType(Scopes.Scope scope, Type parent, Type returnType, string name, ParameterType[] parameters)
+                : base(scope, name, Access.@public) {
+            ReturnType = returnType;
+            Parent = parent;
+            Parameters = parameters;
+        }
 
         public FunctionType(Token token, Type parent, Access access, Type returnType, string name, ParameterType[] parameters, Token[] tokens)
                 : base(null, name, access) {
@@ -175,6 +182,20 @@ namespace BCake.Parser.Syntax.Types {
 
             return false;
         }
+
+        public virtual FunctionType MakeConcrete(ConcreteClassType parent, Type concreteReturnType, ParameterType[] concreteParameters)
+        {
+            return new FunctionType(
+                DefiningToken,
+                parent,
+                Access,
+                concreteReturnType,
+                Name,
+                concreteParameters,
+                Tokens
+            );
+        }
+
 
         public class ParameterType : Type {
             public Type Type { get; protected set; }

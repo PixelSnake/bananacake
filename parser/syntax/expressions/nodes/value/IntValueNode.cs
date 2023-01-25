@@ -8,7 +8,7 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Value {
         public static readonly string rxDecIntLiteral = @"^-?([0-9]+)$";
         public static readonly string rxHexIntLiteral = @"^-?0x([0-9a-fA-F]+)$";
         public static readonly string rxBinIntLiteral = @"^-?0b([0-1]+)$";
-        public static Types.PrimitiveType Type = new PrimitiveType(Namespace.Global.Scope, "int", 0);
+        public static Types.PrimitiveType Type = new PrimitiveType(Namespace.Global.Scope, "int", 0, typeof(IntValueNode));
 
         public override Types.Type ReturnType {
             get => Type;
@@ -16,6 +16,22 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Value {
 
         public IntValueNode(Token token, int value) : base(token) {
             Value = value;
+        }
+
+        /// <summary>
+        /// This method is used to force the given object into the required type.
+        /// If in any way possible, convert it.
+        /// </summary>
+        public static bool ToValueNode(object value, out ValueNode node)
+        {
+            if (value is int i)
+            {
+                node = new IntValueNode(Token.Anonymous(""), i);
+                return true;
+            }
+
+            node = null;
+            return false;
         }
 
         public new static ValueNode Parse(Token token) {

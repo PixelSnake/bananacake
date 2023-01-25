@@ -15,15 +15,31 @@ namespace BCake.Runtime.Nodes.Value {
 
             RuntimeScope.SetValue("this", this);
             foreach (var m in RuntimeScope.Scope.AllMembers) {
-                if (!(m.Value is FunctionType)) continue;
+                switch (m.Value)
+                {
+                    case FunctionType ft:
+                    {
+                        RuntimeScope.SetValue(
+                            m.Key,
+                            new RuntimeFunctionValueNode(
+                                ft,
+                                RuntimeScope
+                            )
+                        );
 
-                RuntimeScope.SetValue(
-                    m.Key,
-                    new RuntimeFunctionValueNode(
-                        m.Value as FunctionType,
-                        RuntimeScope
-                    )
-                );
+                        break;
+                    }
+
+                    default:
+                    {
+                        RuntimeScope.SetValue(
+                            m.Key,
+                            new RuntimeTypeValueNode(m.Value)
+                        );
+
+                        break;
+                    }
+                }
             }
         }
 
