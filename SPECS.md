@@ -150,6 +150,7 @@ public class Vector3 {
 | Symbol | Name  |
 | ------ | ----- |
 | `+`    | plus  |
+| `-`    | minus |
 | `[]`   | index |
 
 ### Classes
