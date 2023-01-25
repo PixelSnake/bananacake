@@ -150,11 +150,11 @@ this.ScenarioInitialize(scenarioInfo);
                 this.ScenarioStart();
 #line 30
  testRunner.Given("the following class is defined:", "class Number {\r\n\tint value;\r\n\r\n\tpublic Number(this.value);\r\n\r\n\tpublic Number oper" +
-                        "ator_minus(Number other) {\r\n\t\treturn new Number(value . other.value);\r\n\t}\r\n\r\n\tpu" +
+                        "ator_minus(Number other) {\r\n\t\treturn new Number(value - other.value);\r\n\t}\r\n\r\n\tpu" +
                         "blic cast string() {\r\n\t\treturn value as string;\r\n\t}\r\n}", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 46
- testRunner.And("the main function contains the following code:", "Number sum = new Number(123) . new Number(456);\r\nTEST(\"result\", sum as string);", ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the main function contains the following code:", "Number sum = new Number(123) - new Number(456);\r\nTEST(\"result\", sum as string);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 51
  testRunner.When("the code is compiled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -163,7 +163,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Then("there are no errors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 53
- testRunner.And("\"result\" evaluates to 579", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"result\" evaluates to -333", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

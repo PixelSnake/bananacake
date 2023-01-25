@@ -22,7 +22,8 @@ public class BCakeInterop : IInteropEntryPoint
     {
         IntValueNode.Type.Scope.Declare(
             IntToStringCast.Implementation,
-            IntegerOperatorPlus.Implementation
+            IntegerOperatorPlus.Implementation,
+            IntegerOperatorMinus.Implementation
         );
 
         StringValueNode.Type.Scope.Declare(

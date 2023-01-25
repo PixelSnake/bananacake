@@ -3,7 +3,7 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
         Symbol = "-",
         OverloadableName = "minus"
     )]
-    public class OperatorMinus : Operator, IRValue {
+    public class OperatorMinus : OverloadableOperator, IRValue {
         
     }
 }

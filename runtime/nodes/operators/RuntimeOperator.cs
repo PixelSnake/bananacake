@@ -21,7 +21,6 @@ namespace BCake.Runtime.Nodes.Operators {
 
                 case OperatorLogicalOr op: return new RuntimeOperatorLogicalOr(op, scope);
 
-                case OperatorMinus op: return new RuntimeOperatorMinus(op, scope);
                 case OperatorMultiply op: return new RuntimeOperatorMultiply(op, scope);
                 case OperatorDivide op: return new RuntimeOperatorDivide(op, scope);
                 case OperatorReturn op: return new RuntimeOperatorReturn(op, scope);

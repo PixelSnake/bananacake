@@ -35,7 +35,7 @@ Scenario: Classes can overload the minus operator:
 			public Number(this.value);
 
 			public Number operator_minus(Number other) {
-				return new Number(value . other.value);
+				return new Number(value - other.value);
 			}
 
 			public cast string() {
@@ -45,10 +45,10 @@ Scenario: Classes can overload the minus operator:
 		"""
 	And the main function contains the following code:
 		"""
-		Number sum = new Number(123) . new Number(456);
+		Number sum = new Number(123) - new Number(456);
 		TEST("result", sum as string);
 		"""
 	When the code is compiled
 	Then there are no errors
-	And "result" evaluates to 579
+	And "result" evaluates to -333
 	

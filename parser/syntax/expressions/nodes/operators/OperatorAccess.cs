@@ -67,18 +67,23 @@ namespace BCake.Parser.Syntax.Expressions.Nodes.Operators {
                 }
 
                 default:
-                {
-                    SymbolToAccess = Left.ReturnType;
-                    MemberToAccess = (Right.Root as ISymbol).Symbol;
+                    {
+                        if (Right.Root is not ISymbol)
+                        {
+                            throw new UnexpectedTokenException(DefiningToken);
+                        }
 
-                    var leftType = Left.ReturnType;
-                    var isSameType = leftType.FullName == scope.GetClosestType()?.FullName;
+                        MemberToAccess = (Right.Root as ISymbol).Symbol;
+                        SymbolToAccess = Left.ReturnType;
 
-                    var canAccess = MemberToAccess.Access == Access.@public || scope.IsChildOf(MemberToAccess.Scope) || isSameType;
-                    if (!canAccess) throw new Exceptions.AccessViolationException(Right.DefiningToken, MemberToAccess, scope);
+                        var leftType = Left.ReturnType;
+                        var isSameType = leftType.FullName == scope.GetClosestType()?.FullName;
 
-                    break;
-                }
+                        var canAccess = MemberToAccess.Access == Access.@public || scope.IsChildOf(MemberToAccess.Scope) || isSameType;
+                        if (!canAccess) throw new Exceptions.AccessViolationException(Right.DefiningToken, MemberToAccess, scope);
+
+                        break;
+                    }
             }
         }
     }

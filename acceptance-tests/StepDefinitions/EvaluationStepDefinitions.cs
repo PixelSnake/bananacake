@@ -14,7 +14,7 @@ namespace BcakeAcceptanceTests.StepDefinitions
             _parserContext = parserContext;
         }
 
-        [Then(@"""([^""]*)"" evaluates to ([0-9]+)")]
+        [Then(@"""([^""]*)"" evaluates to (-?[0-9]+)")]
         public void ThenEvaluatesToInt(string name, string value)
         {
             TestLogCompare<int>(name, value);
