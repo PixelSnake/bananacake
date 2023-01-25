@@ -1,7 +1,6 @@
 ﻿using BCake.Std;
 using BCake.Array;
 using BCake.Integer.Operators;
-using BCake.Integer.Typecasts;
 using BCake.Parser.Syntax.Expressions.Nodes.Value;
 using BCake.Parser.Syntax.Types;
 using BCake.Runtime.Interop;
@@ -12,8 +11,8 @@ public class BCakeInterop : IInteropEntryPoint
 {
     public Type[] Globals => new Type[]
     {
-        print.Implementation,
-        println.Implementation,
+        Print.Implementation,
+        Println.Implementation,
         Array.Implementation,
         IStringCast.Implementation,
     };
@@ -28,6 +27,16 @@ public class BCakeInterop : IInteropEntryPoint
 
         StringValueNode.Type.Scope.Declare(
             StringOperatorPlus.Implementation,
+            IStringCast.Implementation
+        );
+
+        BoolValueNode.Type.Scope.Declare(
+            BoolToStringCast.Implementation,
+            IStringCast.Implementation
+        );
+
+        NullValueNode.Type.Scope.Declare(
+            NullToStringCast.Implementation,
             IStringCast.Implementation
         );
     }

@@ -10,9 +10,9 @@ namespace BCake.Std.IStringCast
 {
     public class IStringCast : NativeInterfaceType
     {
-        public static IStringCast Implementation = new IStringCast();
+        public static readonly IStringCast Implementation = new();
 
-        public IStringCast() : base(Namespace.Global.Scope, "IStringCast") { }
+        private IStringCast() : base(Namespace.Global.Scope, "IStringCast") { }
 
         public override void ParseInner()
         {

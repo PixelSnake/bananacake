@@ -1,6 +1,7 @@
 ﻿{
     "type": "function",
     "name": "println",
+    "classname": "Println",
     "returns": "null",
     "scope": "Namespace.Global.Scope",
     "params": [
@@ -12,6 +13,7 @@
     ],
     "thisArg": false,
     "using": [
+        "BCake.Parser",
         "BCake.Parser.Syntax",
         "BCake.Parser.Syntax.Expressions.Nodes.Value",
         "BCake.Parser.Syntax.Types",

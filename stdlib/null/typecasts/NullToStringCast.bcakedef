@@ -1,0 +1,18 @@
+﻿{
+    "type": "function",
+    "name": "!as_string",
+    "classname": "NullToStringCast",
+    "returns": "StringValueNode.Type",
+    "scope": "NullValueNode.Type.Scope",
+    "params": [],
+    "thisArg": true,
+    "using": [
+        "BCake.Parser",
+        "BCake.Runtime",
+        "BCake.Parser.Syntax.Types",
+        "BCake.Parser.Syntax.Expressions.Nodes.Value",
+        "BCake.Runtime.Nodes.Value"
+    ]
+}
+---
+return new RuntimeStringValueNode(new StringValueNode(DefiningToken, "null"), null);

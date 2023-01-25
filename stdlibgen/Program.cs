@@ -33,16 +33,29 @@ namespace stdlibgen
                     GenerateDefinitions(file);
                 }
             }
+
+            foreach (var subdir in dir.GetDirectories())
+            {
+                GenerateLib(subdir);
+            }
         }
 
         private static void GenerateDefinitions(FileInfo file)
         {
-            var content = File.ReadAllText(file.FullName);
-            var parts = content.Split("---");
+            try
+            {
+                var content = File.ReadAllText(file.FullName);
+                var parts = content.Split("---");
 
-            var header = JObject.Parse(parts[0]);
-            var code = parts[1];
-            NativeFunctionTypeGenerator.Generate(Path.Combine(file.DirectoryName, file.Name.Replace(".bcakedef", ".g.cs")), header, code);
+                var header = JObject.Parse(parts[0]);
+                var code = parts[1];
+
+                NativeFunctionTypeGenerator.Generate(Path.Combine(file.DirectoryName, file.Name.Replace(".bcakedef", ".g.cs")), header, code);
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

@@ -35,3 +35,12 @@ Scenario: Array is initialized with the default value of the given type
 	And "int" evaluates to 0
 	And "bool" evaluates to false
 	And "string" evaluates to null
+
+Scenario: Arrays can be written to
+	Given the main function contains the following code:
+		"""
+		Array<int> nums = new Array<int>(8);
+		nums[0] = 15;
+		"""
+	When the code is compiled
+	Then there are no errors

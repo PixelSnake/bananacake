@@ -1,3 +1,4 @@
+using BCake.Parser;
 using BCake.Parser.Syntax;
 using BCake.Parser.Syntax.Expressions.Nodes.Value;
 using BCake.Parser.Syntax.Types;
@@ -5,21 +6,21 @@ using BCake.Runtime;
 using BCake.Runtime.Nodes.Value;
 
 namespace BCake.Std {
-    public class println : NativeFunctionType {
-        public static NativeFunctionType Implementation = new println(IStringCast.IStringCast.Implementation, true);
+    public class Println : NativeFunctionType {
+        public static readonly NativeFunctionType Implementation = new Println(IStringCast.IStringCast.Implementation, true);
 
         public override bool ExpectsThisArg => false;
 
-        private println(Type typearg1, bool initOverloads = false) : base(
+        private Println(Type typearg1, bool initOverloads = false) : base(
             Namespace.Global.Scope,
             null,
             "println",
             new ParameterType[] {
-                 new ParameterType(null, typearg1, "p1"),
+                new ParameterType(Token.NativeCode(), typearg1, "p0")
+
             },
-            initOverloads ? new NativeFunctionType[]
-            {
-                new println(StringValueNode.Type),
+            initOverloads ? new NativeFunctionType[] {
+                new Println(StringValueNode.Type),
             } : null
         ) {}
 
