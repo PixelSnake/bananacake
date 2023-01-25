@@ -12,8 +12,8 @@ public class BCakeInterop : IInteropEntryPoint
 {
     public Type[] Globals => new Type[]
     {
-        Print.Implementation,
-        Println.Implementation,
+        print.Implementation,
+        println.Implementation,
         Array.Implementation,
         IStringCast.Implementation,
     };

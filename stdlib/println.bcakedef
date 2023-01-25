@@ -1,0 +1,38 @@
+﻿{
+    "type": "function",
+    "name": "println",
+    "returns": "null",
+    "scope": "Namespace.Global.Scope",
+    "params": [
+        "typearg1"
+    ],
+    "typeArgs": [
+        "IStringCast.IStringCast.Implementation",
+        "StringValueNode.Type"
+    ],
+    "thisArg": false,
+    "using": [
+        "BCake.Parser.Syntax",
+        "BCake.Parser.Syntax.Expressions.Nodes.Value",
+        "BCake.Parser.Syntax.Types",
+        "BCake.Runtime",
+        "BCake.Runtime.Nodes.Value"
+    ]
+}
+---
+var arg = arguments[0].Value;
+            
+switch (arg)
+{
+    case RuntimeClassInstanceValueNode civn:
+        var caster = civn.RuntimeScope.GetValue("!as_string") as RuntimeFunctionValueNode;
+
+        System.Console.WriteLine((string)caster.Invoke(civn.RuntimeScope, arguments).Value);
+        break;
+
+    default:
+        System.Console.WriteLine(arg);
+        break;
+}
+
+return new RuntimeNullValueNode(DefiningToken);

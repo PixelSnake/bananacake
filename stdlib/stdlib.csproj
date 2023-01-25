@@ -11,4 +11,8 @@
     <ProjectReference Include="..\runtime\runtime.csproj" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="&quot;$(DevEnvDir)devenv&quot; &quot;$(SolutionDir)bcake.sln&quot; /Build $(configuration) /project &quot;$(SolutionDir)stdlibgen\stdlibgen.csproj&quot;&#xD;&#xA;&quot;$(SolutionDir)stdlibgen\bin\Debug\net6.0\stdlibgen&quot; &quot;$(SolutionDir)stdlib&quot;" />
+  </Target>
+
 </Project>

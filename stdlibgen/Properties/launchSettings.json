@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "stdlibgen": {
+      "commandName": "Project",
+      "commandLineArgs": "\"$(SolutionDir)stdlib\""
+    }
+  }
+}

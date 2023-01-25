@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "parser", "parser\parser.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "runtime", "runtime\runtime.csproj", "{270461EE-7D21-4DC2-AE5B-06815A4F9912}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{893D86DE-4CEB-46C2-B035-2E101D9353A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{893D86DE-4CEB-46C2-B035-2E101D9353A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stdlibgen", "stdlibgen\stdlibgen.csproj", "{2E56E857-AA41-4F97-9261-9FCB3A4E4B64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{893D86DE-4CEB-46C2-B035-2E101D9353A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{893D86DE-4CEB-46C2-B035-2E101D9353A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{893D86DE-4CEB-46C2-B035-2E101D9353A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E56E857-AA41-4F97-9261-9FCB3A4E4B64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E56E857-AA41-4F97-9261-9FCB3A4E4B64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E56E857-AA41-4F97-9261-9FCB3A4E4B64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E56E857-AA41-4F97-9261-9FCB3A4E4B64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
