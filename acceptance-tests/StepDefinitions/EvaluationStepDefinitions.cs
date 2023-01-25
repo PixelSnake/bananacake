@@ -20,6 +20,12 @@ namespace BcakeAcceptanceTests.StepDefinitions
             TestLogCompare<int>(name, value);
         }
 
+        [Then(@"""([^""]*)"" evaluates to ([^""0-9]*)")]
+        public void ThenEvaluatesToWord(string name, string value)
+        {
+            TestLogCompare<string>(name, value);
+        }
+
         [Then(@"""([^""]*)"" evaluates to ""([^""]*)""")]
         public void ThenEvaluatesToString(string name, string value)
         {
